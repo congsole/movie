@@ -60,8 +60,6 @@ public class GoogleSearchService {
 
     public RateDto getWatchaRate(String movieName, int releaseYear) {
         String url = "https://www.google.com/search?q=" + movieName + " (" + releaseYear + ") 왓챠피디아";
-        System.out.println("★" + url);
-
 
         webDriver = getWebDriver();
         webDriver.get(url);

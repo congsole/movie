@@ -8,15 +8,16 @@ import lombok.Getter;
 public class RateDto {
     private String siteName;
     private double netizen_rate;
+    private double netizen_rate_male;
+    private double netizen_rate_female;
     private int netizen_rate10000;
     private int netizen_rate_number;
-    private int netizen_rate_number_male;
-    private int netizen_rate_number_female;
+
     private double audience_rate;
+    private double audience_rate_male;
+    private double audience_rate_female;
     private int audience_rate10000;
     private int audience_rate_number;
-    private int audience_rate_number_male;
-    private int audience_rate_number_female;
 
 
 //    private int justWatch;
