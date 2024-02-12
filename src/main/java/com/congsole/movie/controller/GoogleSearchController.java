@@ -1,13 +1,12 @@
 package com.congsole.movie.controller;
 
-import com.congsole.movie.dto.Ott;
+import com.congsole.movie.dto.MovieDto;
+import com.congsole.movie.dto.OttDto;
+import com.congsole.movie.dto.RateDto;
 import com.congsole.movie.service.GoogleSearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,12 +21,18 @@ public class GoogleSearchController {
     }
 
     @GetMapping("/service/{movieName}")
-    public ResponseEntity<List<Ott>> searchMovie(@PathVariable("movieName") String movieName) {
-        List<Ott> ottList = googleSearchService.servicesAt(movieName);
-        return ResponseEntity.ok(ottList);
+    public ResponseEntity<List<OttDto>> searchMovie(@PathVariable("movieName") String movieName) {
+        List<OttDto> ottDtoList = googleSearchService.servicesAt(movieName);
+        return ResponseEntity.ok(ottDtoList);
     }
     @GetMapping("/{movieName}")
     public ResponseEntity<String> message(@PathVariable("movieName") String movieName) {
         return ResponseEntity.ok(movieName);
+    }
+
+    @GetMapping("/watcha")
+    public ResponseEntity<RateDto> getRateFromWatchaPedia(@RequestParam String movieName, @RequestParam int releaseYear) {
+        RateDto rateDto = googleSearchService.getWatchaRate(movieName,releaseYear);
+        return ResponseEntity.ok(rateDto);
     }
 }
