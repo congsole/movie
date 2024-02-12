@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class Ott {
+public class OttDto {
     private String ottName;
     private String cost;
 }

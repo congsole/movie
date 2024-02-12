@@ -1,14 +1,21 @@
 package com.congsole.movie.dto;
 
-public class Rate {
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
+public class RateDto {
     private String siteName;
     private double netizen_rate;
+    private int netizen_rate10000;
     private int netizen_rate_number;
     private int netizen_rate_number_male;
     private int netizen_rate_number_female;
     private double audience_rate;
+    private int audience_rate10000;
     private int audience_rate_number;
-    private int audience_rate_number_mal;
+    private int audience_rate_number_male;
     private int audience_rate_number_female;
 
 
