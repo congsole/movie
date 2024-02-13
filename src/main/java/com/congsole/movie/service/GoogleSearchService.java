@@ -2,6 +2,7 @@ package com.congsole.movie.service;
 
 import com.congsole.movie.dto.OttDto;
 import com.congsole.movie.dto.RateDto;
+import com.congsole.movie.dto.WatchaDto;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -39,23 +40,26 @@ public class GoogleSearchService {
         webDriver.get(url);
 
         List<OttDto> ottDtoList = new ArrayList<>();
-
-        List<WebElement> elementList = webDriver.findElements(By.className("phXTff"));
-        for(WebElement webElement: elementList) {
-            String ottName = webElement.findElement(By.className("bclEt")).getText();
-            WebElement costElement = webElement.findElement(By.className("rsj3fb"));
-            String cost;
-            if(costElement.getText().contains("구독")) {
-                cost = costElement.getText();
-            } else if(costElement.getText().contains("최저")) {
-                cost = "최저 " + costElement.findElement(new By.ByCssSelector("span")).getText();
-            } else {
-                cost = costElement.findElement(new By.ByCssSelector("span")).getText();
+        if(webDriver.findElements(By.className("phXTff")) != null) {
+            List<WebElement> elementList = webDriver.findElements(By.className("phXTff"));
+            for (WebElement webElement : elementList) {
+                String ottName = webElement.findElement(By.className("bclEt")).getText();
+                WebElement costElement = webElement.findElement(By.className("rsj3fb"));
+                String cost;
+                if (costElement.getText().contains("구독")) {
+                    cost = costElement.getText();
+                } else if (costElement.getText().contains("최저")) {
+                    cost = "최저 " + costElement.findElement(new By.ByCssSelector("span")).getText();
+                } else {
+                    cost = costElement.findElement(new By.ByCssSelector("span")).getText();
+                }
+                ottDtoList.add(OttDto.builder().ottName(ottName).cost(cost).build());
             }
-            ottDtoList.add(OttDto.builder().ottName(ottName).cost(cost).build());
-        }
 
-        return ottDtoList;
+            return ottDtoList;
+        } else {
+            return null;
+        }
     }
 
     public RateDto getWatchaRate(String movieName, int releaseYear) {
@@ -80,6 +84,21 @@ public class GoogleSearchService {
                 .build();
 
         return rate;
+    }
+
+    public WatchaDto getWatchaDto(String movieName, int releaseYear) {
+        String url = "https://www.google.com/search?q=" + movieName + " (" + releaseYear + ") 왓챠피디아";
+
+        webDriver = getWebDriver();
+        webDriver.get(url);
+
+        String newUrl = webDriver.findElement(By.xpath("//*[@id=\"rso\"]/div[1]/div/div/div[1]/div/div/span/a")).getAttribute("href");
+
+        webDriver.get(newUrl);
+        String posterUrl = webDriver.findElement(By.xpath("//*[@id=\"root\"]/div/div[1]/section/div/div[2]/div/div[1]/div/div[2]/section[1]/div[1]/div/div/img")).getAttribute("src");
+        String plot = webDriver.findElement(By.xpath("//*[@id=\"root\"]/div/div[1]/section/div/div[2]/div/div[1]/div/div[2]/section[1]/div[2]/section[3]")).getText();
+
+        return WatchaDto.builder().posterUrl(posterUrl).plot(plot).build();
     }
 
     private WebDriver getWebDriver() {

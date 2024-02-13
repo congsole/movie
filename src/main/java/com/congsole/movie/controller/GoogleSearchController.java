@@ -3,6 +3,7 @@ package com.congsole.movie.controller;
 import com.congsole.movie.dto.MovieDto;
 import com.congsole.movie.dto.OttDto;
 import com.congsole.movie.dto.RateDto;
+import com.congsole.movie.dto.WatchaDto;
 import com.congsole.movie.service.GoogleSearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,4 +36,11 @@ public class GoogleSearchController {
         RateDto rateDto = googleSearchService.getWatchaRate(movieName,releaseYear);
         return ResponseEntity.ok(rateDto);
     }
+
+    @GetMapping("/poster_plot")
+    public ResponseEntity<WatchaDto> getPosterAndPlotFromWatchaPedia(@RequestParam String movieName, @RequestParam int releaseYear) {
+        return ResponseEntity.ok(googleSearchService.getWatchaDto(movieName, releaseYear));
+    }
+
+
 }
