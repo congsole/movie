@@ -1,48 +1,67 @@
 package com.congsole.movie.service;
 
-import org.springframework.stereotype.Service;
+import com.congsole.movie.KMDbDto.Data;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URLEncoder;
-import java.net.URL;
+import com.congsole.movie.domain.Movie;
+import com.congsole.movie.domain.MovieRepository;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+
+import java.net.URI;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class KMDbApiService {
-    public static void main(String[] args) throws IOException {
-        System.out.println("hihi");
-        StringBuilder urlBuilder = new StringBuilder("http://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp?collection=kmdb_new2&nation=대한민국");
-        /*URL*/
-        urlBuilder.append("?" + URLEncoder.encode("ServiceKey","UTF-8") + "=2EI1I9663MK056Y91EKI");
-        /*Service Key*/
-        urlBuilder.append("&" + URLEncoder.encode("val001","UTF-8") + "=" + URLEncoder.encode("2018", "UTF-8"));
-        /*상영년도*/
-        urlBuilder.append("&" + URLEncoder.encode("val002","UTF-8") + "=" + URLEncoder.encode("01", "UTF-8"));
-        /*상영 월*/
-        URL url = new URL(urlBuilder.toString());
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Content-type", "application/json");
 
-        System.out.println("Response code: " + conn.getResponseCode());
+    private final RestTemplate restTemplate;
+    private final MovieRepository movieRepository;
 
-        BufferedReader rd;
-        if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        } else {
-            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+    public void saveAllMovies(int startCount) {
+        Data dto;
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp");
+        URI uri;
+
+        uriBuilder.queryParam("collection", "kmdb_new2");
+        uriBuilder.queryParam("ServiceKey", "2EI1I9663MK056Y91EKI");
+        uriBuilder.queryParam("listCount", 500);
+        uriBuilder.queryParam("startCount", startCount);
+        uriBuilder.queryParam("detail", "Y");
+        uri = uriBuilder.build().encode().toUri();
+
+        // api 호출
+        String json = restTemplate.exchange(uri, HttpMethod.GET, null, String.class).getBody();
+
+        try {
+            // 결과값을 DTO로 변환
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            dto = objectMapper.readValue(json, Data.class);
+            // DTO를 Entity로 변환
+            List<Movie> movieList = dto.getResult().stream().map(Movie::from).collect(Collectors.toList());
+            // DB에 저장
+            for(Movie movie: movieList) {
+                movieRepository.save(movie);
+            }
+        } catch(Exception e) {
+            System.out.println("하하하 익셉션 발생");
+            System.out.println(e.getMessage());
         }
 
-        StringBuilder sb = new StringBuilder(); String line;
-        while ((line = rd.readLine()) != null) {
-            sb.append(line);
-        } rd.close();
-        conn.disconnect();
-
-        System.out.println(sb);
     }
+
+    public long countAllMovies() {
+        return movieRepository.count();
+    }
+
 }
 
 

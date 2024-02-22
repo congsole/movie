@@ -1,15 +1,15 @@
-package com.congsole.movie.dto;
+package com.congsole.movie.KMDbDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompanyDto {
-    private String companyCd;
-    private String companyNm;
+@Getter
+@Setter
+public class Plot {
+    private String plotLang;
+    private String plotText;
 }
