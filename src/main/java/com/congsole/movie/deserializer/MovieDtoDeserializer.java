@@ -1,8 +1,6 @@
-package com.congsole.movie;
+package com.congsole.movie.deserializer;
 
-import com.congsole.movie.KMDbDto.Movie;
-import com.congsole.movie.KMDbDto.Plot;
-import com.congsole.movie.KMDbDto.Plots;
+import com.congsole.movie.KMDbDto.*;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -11,6 +9,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class MovieDtoDeserializer extends JsonDeserializer<Movie> {
@@ -26,11 +25,21 @@ public class MovieDtoDeserializer extends JsonDeserializer<Movie> {
         int prodYear = node.findValue("prodYear").asInt();
         String nation = node.findValue("nation").asText();
         String company = node.findValue("company").asText();
+
         JsonNode plotsNode = node.findValue("plots").findValue("plot");
         String plotLang = plotsNode.findValue("plotLang").asText();
         String plotText = plotsNode.findValue("plotText").asText();
         Plot plot = new Plot(plotLang, plotText);
         Plots plots = new Plots(List.of(plot));
+
+        JsonNode actorListNode = node.findValue("actors").findValue("actor");
+        List<Actor> actorList = Arrays.stream(objectMapper.treeToValue(actorListNode, Actor[].class)).toList();
+        Actors actors = new Actors(actorList);
+
+        JsonNode directorListNode = node.findValue("directors").findValue("director");
+        List<Director> directorList = Arrays.stream(objectMapper.treeToValue(directorListNode, Director[].class)).toList();
+        Directors directors = new Directors(directorList);
+
         int runtime = node.findValue("runtime").asInt();
         String rating = node.findValue("rating").asText();
         String genre = node.findValue("genre").asText();
@@ -43,7 +52,7 @@ public class MovieDtoDeserializer extends JsonDeserializer<Movie> {
 
 
 
-        return new Movie(docid, title, titleEng, titleOrg, prodYear, nation, company, plots, runtime, rating, genre, type,
+        return new Movie(docid, title, titleEng, titleOrg, prodYear, directors, actors, nation, company, plots, runtime, rating, genre, type,
                 repRlsDate, keywords, posters, regDate, modDate);
     }
 }

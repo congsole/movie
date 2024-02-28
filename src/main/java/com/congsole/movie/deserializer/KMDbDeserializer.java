@@ -1,4 +1,4 @@
-package com.congsole.movie;
+package com.congsole.movie.deserializer;
 
 import com.congsole.movie.KMDbDto.Data;
 import com.congsole.movie.KMDbDto.KMDbMovieList;
@@ -27,6 +27,8 @@ public class KMDbDeserializer extends JsonDeserializer<Data> {
 
         JsonNode movieListNode = node.findValue("Result");
         List<Movie> movieList = Arrays.stream(objectMapper.treeToValue(movieListNode, Movie[].class)).toList();
+
+
 
         return new Data(totalCount, count, movieList);
     }
