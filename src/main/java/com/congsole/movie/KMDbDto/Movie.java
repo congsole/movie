@@ -1,14 +1,12 @@
 package com.congsole.movie.KMDbDto;
 
-import com.congsole.movie.KMDbDeserializer;
-import com.congsole.movie.MovieDtoDeserializer;
+import com.congsole.movie.deserializer.MovieDtoDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -24,8 +22,8 @@ public class Movie {
     private String titleOrg;
 //    private String titleEtc;
     private int prodYear;
-//    private Directors directors;
-//    private Actors actors;
+    private Directors directors;
+    private Actors actors;
     private String nation;
     private String company;
     private Plots plots;
@@ -60,6 +58,8 @@ public class Movie {
 //    private String Awards2;
     private String regDate;
     private String modDate;
+
+
 //    private Codes Codes;
 //    private CommCodes CommCodes;
 //    private String ALIAS;

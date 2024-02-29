@@ -7,5 +7,6 @@ import java.util.List;
 public interface MovieRepository extends JpaRepository<Movie, String> {
     List<Movie> findMoviesByProdYear(int year);
     List<Movie> findMoviesByTitleContaining(String keyword);
+    List<Movie> findMoviesByProdYearBetween(int year1, int year2);
 
 }

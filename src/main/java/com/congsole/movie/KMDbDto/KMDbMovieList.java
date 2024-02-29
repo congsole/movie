@@ -1,7 +1,5 @@
 package com.congsole.movie.KMDbDto;
 
-import com.congsole.movie.KMDbDeserializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

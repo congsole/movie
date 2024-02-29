@@ -22,4 +22,22 @@ public class KMDbApiController {
         }
         return ResponseEntity.ok(kmDbApiService.countAllMovies());
     }
+
+    @GetMapping("/saveAllActorsAndDirectors")
+    public ResponseEntity<?> saveAllActorsAndDirectors() {
+        double totalPage = Math.ceil(104408.0/500.0);
+        for(int i = 0; i <= totalPage; i++) {
+            kmDbApiService.saveAllActorsAndDirectors(500*i);
+        }
+        return ResponseEntity.ok("");
+    }
+
+    @GetMapping("/saveAllGenreAndNation")
+    public ResponseEntity<?> saveAllGenreAndNation() {
+        double totalPage = Math.ceil(104408.0/500.0);
+        for(int i = 0; i <= totalPage; i++) {
+            kmDbApiService.saveAllGenreAndNation(500*i);
+        }
+        return ResponseEntity.ok("");
+    }
 }

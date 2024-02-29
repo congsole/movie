@@ -15,7 +15,7 @@ spring:
     password: ${LOCAL_DB_PASSWORD}
   jpa:
     defer-datasource-initialization: true
-    hibernate.ddl-auto: validate
+    hibernate.ddl-auto: update
 
     show-sql: true
     properties:

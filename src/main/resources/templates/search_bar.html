@@ -34,59 +34,49 @@
             height: 1.5em;
             width: 290px;
 
-        }
-        button.dropdown-toggle {
-            height: 1.7em;
+
 
         }
+
+        #directorSearchList, #actorSearchList{
+            position: absolute; /* 절대 위치 지정 */
+            top: 100%; /* 부모 요소의 아래에 배치 */
+            left: 0; /* 왼쪽 정렬 */
+            width: 100%; /* 너비 100% */
+            z-index: 1; /* 다른 요소들 위에 표시 */
+            background-color: white;
+            color: black;
+        }
+
 
     </style>
 </head>
 <body>
 <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <div class="navbar-collapse" id="navbarVerticalCollapse">
-      <div class="navbar-vertical-content scrollbar bg-dark text-white" style="--bs-bg-opacity: .7;">
-          <div class="btn-group">
-              <span for="director_search">감독&nbsp;</span>
-              <input type="text" id="directorNm">
 
+<div class="navbar-collapse" id="navbarVerticalCollapse">
+    <div class="navbar-vertical-content scrollbar bg-dark text-white" style="--bs-bg-opacity: .7;">
+        <p style="margin:0">감독&nbsp;</p>
+        <div id="directorNmList"></div>
+        <div class="btn-group">
+            <input type="text" id="directorNm" name="directorNm">&nbsp;
+            <img src="/img/expander_white.png" style="height:1.5em; width:1.5em;">
+            <div id="directorSearchList">
+            </div>
+        </div>
 
-              <button class="btn btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <p style="margin:0">배우&nbsp;</p>
+        <div id="actorNmList"></div>
+        <div class="btn-group">
+            <input type="text" id="actorNm" name="actorNm">&nbsp;
+            <img src="/img/expander_white.png" style="height:1.5em; width:1.5em;">
+            <div id="actorSearchList">
+            </div>
+        </div>
 
-              </button>
-              <ul  class="dropdown-menu dropdown-menu-end" style="width: 500px;">
-                  <li th:each="director: ${directorList}" style="display:inline; float:left; font-size:11px">
-                      <a class="dropdown-item director-item" href="#" th:text="${director.directorNm}"></a>
-
-                  </li>
-                  <!--<li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Separated link</a></li>-->
-              </ul>
-          </div>
-          <br>
-          <div class="btn-group">
-              <span for="director_search">배우&nbsp;</span>
-              <input type="text" id="actorNm">
-
-
-              <button class="btn btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-
-              </button>
-              <ul  class="dropdown-menu dropdown-menu-end" style="width: 500px;">
-                  <li th:each="actor: ${actorList}" style="display:inline; float:left; font-size:11px">
-                      <a class="dropdown-item actor-item" href="#" th:text="${actor.actorNm}"></a>
-
-                  </li>
-                  <!--<li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Separated link</a></li>-->
-              </ul>
-          </div>
-      </div>
     </div>
+</div>
+
 
 
 
@@ -95,76 +85,67 @@
 <script>
     $(document).ready(function(){
 
-      var director = $('#directorNm')
-
-      $('.director-item').click(function(e) {
-          e.preventDefault();
-          var text = $(this).text();
-          if(director.val().length == 0) {
-              var textList = director.val().split('/');
-              var pressed = textList[textList.length-1];
-              director.val(director.val().replace(pressed, ''));
-              director.val(text + '/');
-          } else {
-              var textList = director.val().split('/');
-              var pressed = textList[textList.length-1];
-              director.val(director.val().replace(pressed, ''));
-              director.val(director.val() + text + '/');
-          }
-
-      });
-
-    var dropdownItemList = document.getElementsByClassName('director-item');
-    director.keyup(function(e) {
-        var textList = $(this).val().split('/');
-        console.log(textList);
-        var pressed = textList[textList.length-1];
-        console.log(pressed);
-        for(var i=0; i<dropdownItemList.length; i++) {
-            if(dropdownItemList[i].innerHTML.includes(pressed) && pressed.trim().length !=0) {
-                dropdownItemList[i].style.color = 'red';
-            } else {
-                dropdownItemList[i].style.color = 'black';
-            }
-        }
-    });
-
-        var actor = $('#actorNm')
-
-        $('.actor-item').click(function(e) {
-            e.preventDefault();
-            var text = $(this).text();
-            if(actor.val().length == 0) {
-                var textList = actor.val().split('/');
-                var pressed = textList[textList.length-1];
-                actor.val(actor.val().replace(pressed, ''));
-                actor.val(text + '/');
-            } else {
-                var textList = actor.val().split('/');
-                var pressed = textList[textList.length-1];
-                actor.val(actor.val().replace(pressed, ''));
-                actor.val(actor.val() + text + '/');
-            }
-
-        });
-
-        var dropdownItemList = document.getElementsByClassName('actor-item');
-        actor.keyup(function(e) {
-            var textList = $(this).val().split('/');
-            console.log(textList);
-            var pressed = textList[textList.length-1];
-            console.log(pressed);
-            for(var i=0; i<dropdownItemList.length; i++) {
-                if(dropdownItemList[i].innerHTML.includes(pressed) && pressed.trim().length !=0) {
-                    dropdownItemList[i].style.color = 'red';
-                } else {
-                    dropdownItemList[i].style.color = 'black';
-                }
+        document.getElementById('directorNm').addEventListener('input', function() {
+            if(!$(this).val().trim().length == 0) {
+                $.ajax({
+                    url:"/director/autocomplete",
+                    type:"get",
+                    data:{"directorNm": $("#directorNm").val()},
+                    dataType:"json",
+                    success: function(json){
+                        if(json.length > 0){
+                            var html = "";
+                            $.each(json, function(index, item){
+                                var searchedNm = item.searchedNm;
+                                html += "<span class='result' style='cursor:pointer;'>" + searchedNm + "</span><br>";
+                            });
+                            $("#directorSearchList").html(html);
+                        }
+                    },
+                    error: function(request, status, error){
+                        alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                    }
+                });
             }
         });
 
+        $('#directorSearchList').on('click', 'span.result', function() {
+            $('#directorNmList').append('<div style="border-radius: 10%;border: 1px solid lightgrey;display:inline-flex;padding:3px;margin:3px;">' + $(this).html() + '</div>');
+            $('#directorNm').val('');
+            $('#directorSearchList').html('');
+        });
+
+        document.getElementById('actorNm').addEventListener('input', function() {
+            if(!$(this).val().trim().length == 0) {
+                $.ajax({
+                    url:"/actor/autocomplete",
+                    type:"get",
+                    data:{"actorNm": $("#actorNm").val()},
+                    dataType:"json",
+                    success: function(json){
+                        if(json.length > 0){
+                            var html = "";
+                            $.each(json, function(index, item){
+                                var searchedNm = item.searchedNm;
+                                html += "<span class='result' style='cursor:pointer;'>" + searchedNm + "</span><br>";
+                            });
+                            $("#actorSearchList").html(html);
+                        }
+                    },
+                    error: function(request, status, error){
+                        alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                    }
+                });
+            }
+        });
+
+        $('#actorSearchList').on('click', 'span.result', function() {
+            $('#actorNmList').append('<div style="border-radius: 10%;border: 1px solid lightgrey;display:inline-flex;padding:3px;margin:3px;">' + $(this).html() + '</div>');
+            $('#actorNm').val('');
+            $('#actorSearchList').html('');
+        });
   });
   </script>
 </body>
-</body>
+
 </html>

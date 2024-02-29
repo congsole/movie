@@ -44,8 +44,9 @@ public class GoogleSearchService {
     }
 
     public int addWatchaRates() {
-        List<Movie> movieList = movieRepository.findMoviesByProdYear(2012);
-//        List<Movie> movieList = movieRepository.findMoviesByTitleContaining("호빗");
+//       List<Movie> movieList = movieRepository.findMoviesByProdYear();
+      List<Movie> movieList = movieRepository.findMoviesByProdYearBetween(1971, 1977);
+//        List<Movie> movieList = movieRepository.findMoviesByTitleContaining("집으로");
         RateDto rateDto;
         for(Movie movie: movieList) {
             if(movie.getRate() == 0 && !movie.getGenre().isEmpty() && !movie.getGenre().contains("에로") && !movie.getRepRlsDate().isEmpty()) {
@@ -64,7 +65,7 @@ public class GoogleSearchService {
         String url = "https://www.google.com/search?q=" + q;
         webDriver = getWebDriver();
         webDriver.get(url);
-        webDriverWait = new WebDriverWait(webDriver, Duration.ofSeconds(3));
+        webDriverWait = new WebDriverWait(webDriver, Duration.ofSeconds(10));
 
         String firstResult;
         try {
@@ -128,15 +129,17 @@ public class GoogleSearchService {
                 "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
                 "Accept=text_html,application_xhtml+xml,application_xml;q=0.9,image_webp,**/**;q=0.8",
                 "Accept-Language=en-US",
-                "--remote-allow-origins=*");
+                "--remote-allow-origins=*",
+                "incognito"
+        );
 
 //        options.addArguments("headless");
 //        options.addArguments();
 
         // webDriver 생성
         webDriver = new ChromeDriver(options);
-        webDriver.manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS);
-        webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); // 페이지를 불러오는 여유시간
+        webDriver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS); // 페이지를 불러오는 여유시간
         return webDriver;
     }
 }

@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Actor {
+    private String actorId;
     private String actorNm;
     private String actorEnNm;
-    private String actorId;
 }

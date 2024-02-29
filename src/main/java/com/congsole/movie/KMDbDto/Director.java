@@ -10,8 +10,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Director {
+    private String directorId;
     private String directorNm;
     private String directorEnNm;
-    private String directorId;
+
 
 }
