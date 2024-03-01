@@ -2,8 +2,7 @@ package com.congsole.movie.service;
 
 import com.congsole.movie.KMDbDto.Actor;
 import com.congsole.movie.KMDbDto.Director;
-import com.congsole.movie.domain.ActorRepository;
-import com.congsole.movie.domain.DirectorRepository;
+import com.congsole.movie.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -17,6 +16,8 @@ public class ViewService {
 
     private final ActorRepository actorRepository;
     private final DirectorRepository directorRepository;
+    private final GenreRepository genreRepository;
+    private final NationRepository nationRepository;
 
     public List<Director> findAllDirectorsSortedByDirectorNm() {
         List<com.congsole.movie.domain.Director> directorList = directorRepository.findAll(Sort.by(Sort.Direction.ASC, "directorNm"));
@@ -34,5 +35,12 @@ public class ViewService {
 
     public List<Actor> actorNmAutocomplete(String inputtedNm) {
         return actorRepository.findDistinctByActorNmContaining(inputtedNm).stream().map(com.congsole.movie.domain.Actor::to).collect(Collectors.toList());
+    }
+
+    public List<com.congsole.movie.KMDbDto.Genre> genreAutocomplete(String inputtedGenre) {
+        return genreRepository.findByGenreContaining(inputtedGenre).stream().map(Genre::to).collect(Collectors.toList());
+    }
+    public List<com.congsole.movie.KMDbDto.Nation> nationAutocomplete(String inputtedNation) {
+        return nationRepository.findByNationContaining(inputtedNation).stream().map(Nation::to).collect(Collectors.toList());
     }
 }

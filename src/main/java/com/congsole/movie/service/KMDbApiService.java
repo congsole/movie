@@ -4,6 +4,7 @@ import com.congsole.movie.KMDbDto.Actor;
 import com.congsole.movie.KMDbDto.Data;
 
 import com.congsole.movie.KMDbDto.Director;
+import com.congsole.movie.KMDbDto.SearchRequestDto;
 import com.congsole.movie.domain.*;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,6 +31,18 @@ public class KMDbApiService {
     private final GenreRepository genreRepository;
     private final NationRepository nationRepository;
 
+    public URI getUri(int startCount) {
+        UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp");
+        URI uri;
+
+        uriBuilder.queryParam("collection", "kmdb_new2");
+        uriBuilder.queryParam("ServiceKey", "2EI1I9663MK056Y91EKI");
+        uriBuilder.queryParam("listCount", 500);
+        uriBuilder.queryParam("startCount", startCount);
+        uriBuilder.queryParam("detail", "Y");
+        uri = uriBuilder.build().encode().toUri();
+        return uri;
+    }
     public void saveAllMovies(int startCount) {
         Data dto;
         URI uri = getUri(startCount);
@@ -114,17 +127,37 @@ public class KMDbApiService {
             System.out.println(e.getMessage());
         }
     }
-    public URI getUri(int startCount) {
+
+    public List<com.congsole.movie.KMDbDto.Movie> searchRough(SearchRequestDto requestDto) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp");
         URI uri;
+        Data dto;
 
+        // api 호출
         uriBuilder.queryParam("collection", "kmdb_new2");
         uriBuilder.queryParam("ServiceKey", "2EI1I9663MK056Y91EKI");
         uriBuilder.queryParam("listCount", 500);
-        uriBuilder.queryParam("startCount", startCount);
-        uriBuilder.queryParam("detail", "Y");
+        uriBuilder.queryParam("startCount", 0);
+        uriBuilder.queryParam("director", requestDto.getDirector());
+        uriBuilder.queryParam("actor", requestDto.getActor());
+        uriBuilder.queryParam("nation", requestDto.getNation());
+        uriBuilder.queryParam("genre", requestDto.getGenre());
+
         uri = uriBuilder.build().encode().toUri();
-        return uri;
+
+        String json = restTemplate.exchange(uri, HttpMethod.GET, null, String.class).getBody();
+//        System.out.println(json);
+        try {
+            // 결과값을 DTO로 변환
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            dto = objectMapper.readValue(json, Data.class);
+//            System.out.println(dto.getResult().get(0).getDocId());
+            return dto.getResult();
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 }
 

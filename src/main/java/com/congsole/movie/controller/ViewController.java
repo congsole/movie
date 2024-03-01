@@ -2,6 +2,8 @@ package com.congsole.movie.controller;
 
 import com.congsole.movie.KMDbDto.Actor;
 import com.congsole.movie.KMDbDto.Director;
+import com.congsole.movie.KMDbDto.Genre;
+import com.congsole.movie.KMDbDto.Nation;
 import com.congsole.movie.domain.ActorRepository;
 import com.congsole.movie.domain.DirectorRepository;
 import com.congsole.movie.service.ViewService;
@@ -70,13 +72,13 @@ public class ViewController {
     @ResponseBody
     @GetMapping(value="/genre/autocomplete", produces="text/plain;charset=UTF-8")
     public String genreAutocomplete(HttpServletRequest request) throws JSONException {
-        String inputtedNm = request.getParameter("actorNm");
-        List<Actor> searchedNmList = viewService.actorNmAutocomplete(inputtedNm);
+        String inputtedGenre = request.getParameter("genre");
+        List<Genre> searchedGenreList = viewService.genreAutocomplete(inputtedGenre);
         JSONArray jsonArr = new JSONArray();
-        if(searchedNmList != null) {
-            for(Actor actorDto : searchedNmList) {
+        if(searchedGenreList != null) {
+            for(Genre searchedGenre : searchedGenreList) {
                 JSONObject jsonObj = new JSONObject();
-                jsonObj.put("searchedNm", actorDto.getActorNm());
+                jsonObj.put("searchedGenre", searchedGenre.getGenre());
                 jsonArr.put(jsonObj);
             }
         }
@@ -85,16 +87,18 @@ public class ViewController {
     @ResponseBody
     @GetMapping(value="/nation/autocomplete", produces="text/plain;charset=UTF-8")
     public String nationAutocomplete(HttpServletRequest request) throws JSONException {
-        String inputtedNm = request.getParameter("actorNm");
-        List<Actor> searchedNmList = viewService.actorNmAutocomplete(inputtedNm);
+        String inputtedNation = request.getParameter("nation");
+        List<Nation> searchedNationList = viewService.nationAutocomplete(inputtedNation);
         JSONArray jsonArr = new JSONArray();
-        if(searchedNmList != null) {
-            for(Actor actorDto : searchedNmList) {
+        if(searchedNationList != null) {
+            for(Nation searchedNation : searchedNationList) {
                 JSONObject jsonObj = new JSONObject();
-                jsonObj.put("searchedNm", actorDto.getActorNm());
+                jsonObj.put("searchedNation", searchedNation.getNation());
                 jsonArr.put(jsonObj);
             }
         }
         return jsonArr.toString();
     }
+
+
 }

@@ -26,4 +26,7 @@ public class Genre {
         return new Genre(genre);
     }
 
+    public static com.congsole.movie.KMDbDto.Genre to(Genre genre) {
+        return new com.congsole.movie.KMDbDto.Genre(genre.getId(), genre.getGenre());
+    }
 }

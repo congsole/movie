@@ -24,4 +24,8 @@ public class Nation {
     public static Nation of(String nation) {
         return new Nation(nation);
     }
+
+    public static com.congsole.movie.KMDbDto.Nation to(Nation nation) {
+        return new com.congsole.movie.KMDbDto.Nation(nation.getId(), nation.getNation());
+    }
 }

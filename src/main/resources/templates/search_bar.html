@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <title>안녕?fdfdfdfdfdf</title>
+    <link href="/css/search.css" rel="stylesheet">
+    <title>내 맘대로 영화 순위</title>
     <style>
         #navbarVerticalCollapse {
             /*width: 1280px;*/
@@ -17,7 +18,7 @@
         }
         .navbar-vertical-content {
             width: 400px;
-            height: 800px;
+            height: 100%;
             border-radius: 20px;
             padding: 20px;
         }
@@ -29,16 +30,13 @@
             position: relative;
         }
 
-        input#directorNm, input#actorNm {
+        input#directorNm, input#actorNm, input#genre, input#nation {
             border: none;
             height: 1.5em;
             width: 290px;
-
-
-
         }
 
-        #directorSearchList, #actorSearchList{
+        #directorSearchList, #actorSearchList, #genreSearchList, #nationSearchList{
             position: absolute; /* 절대 위치 지정 */
             top: 100%; /* 부모 요소의 아래에 배치 */
             left: 0; /* 왼쪽 정렬 */
@@ -56,24 +54,71 @@
 
 <div class="navbar-collapse" id="navbarVerticalCollapse">
     <div class="navbar-vertical-content scrollbar bg-dark text-white" style="--bs-bg-opacity: .7;">
-        <p style="margin:0">감독&nbsp;</p>
-        <div id="directorNmList"></div>
-        <div class="btn-group">
-            <input type="text" id="directorNm" name="directorNm">&nbsp;
-            <img src="/img/expander_white.png" style="height:1.5em; width:1.5em;">
-            <div id="directorSearchList">
+        <form>
+            <p style="margin:0">감독&nbsp;</p>
+            <div id="directorNmList"></div>
+            <div class="btn-group">
+                <input type="text" id="directorNm" name="directorNm">&nbsp;
+                <img src="/img/expander_white.png" style="height:1.5em; width:1.5em;">
+                <div id="directorSearchList">
+                </div>
             </div>
-        </div>
+            <hr>
 
-        <p style="margin:0">배우&nbsp;</p>
-        <div id="actorNmList"></div>
-        <div class="btn-group">
-            <input type="text" id="actorNm" name="actorNm">&nbsp;
-            <img src="/img/expander_white.png" style="height:1.5em; width:1.5em;">
-            <div id="actorSearchList">
+            <p style="margin:0">배우&nbsp;</p>
+            <div id="actorNmList"></div>
+            <div class="btn-group">
+                <input type="text" id="actorNm" name="actorNm">&nbsp;
+                <img src="/img/expander_white.png" style="height:1.5em; width:1.5em;">
+                <div id="actorSearchList">
+                </div>
             </div>
-        </div>
+            <hr>
 
+            <p style="margin:0">장르&nbsp;</p>
+            <div id="genreList"></div>
+            <div class="btn-group">
+                <input type="text" id="genre" name="genre">&nbsp;
+                <img src="/img/expander_white.png" style="height:1.5em; width:1.5em;">
+                <div id="genreSearchList">
+                </div>
+            </div>
+            <hr>
+            <p style="margin:0">국가&nbsp;</p>
+            <div id="nationList"></div>
+            <div class="btn-group">
+                <input type="text" id="nation" name="nation">&nbsp;
+                <img src="/img/expander_white.png" style="height:1.5em; width:1.5em;">
+                <div id="nationSearchList">
+                </div>
+            </div>
+            <hr>
+            <div class="middle">
+                <span>가격 PRICE</span>
+                <div class="multi-range-slider">
+                    <input type="range" id="price-input-left" min="0" step="1000" max="1000000" value="0" name="price_L"
+                           oninput="document.getElementById('price_left').innerHTML=(Math.min((this.value), document.getElementById('price-input-right').value-1) + '￦');">
+                    <input type="range" id="price-input-right" min="0" step="1000" max="1000000" value="1000000" name="price_R"
+                           oninput="document.getElementById('price_right').innerHTML=(Math.max((this.value), document.getElementById('price-input-left').value-(-1)) + '￦');">
+
+                    <div class="slider price">
+                        <div class="track">&nbsp;</div>
+                        <div class="range price"></div>
+                        <div class="thumb left price"></div>
+                        <div class="thumb right price"></div>
+                        <span
+                                style="float: left; color: rgb(200,200,200); transform: translateX(-21px)">0￦</span>
+                        <span
+                                style="float: right; color: rgb(200,200,200); transform: translateX(22px)">1000000￦</span>
+                        <span id="price_left"
+                              style="position: absolute; transform: translateX(-22px)">0￦</span>
+                        <span id="price_right"
+                              style="position: absolute; transform: translateX(26px)">1000000￦</span>
+                    </div>
+                </div>
+            </div>
+            <input type="submit" value="순  위  검  색">
+        </form>
     </div>
 </div>
 
@@ -106,6 +151,8 @@
                         alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
                     }
                 });
+            } else {
+                $('#directorSearchList').html('');
             }
         });
 
@@ -136,6 +183,8 @@
                         alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
                     }
                 });
+            } else {
+                $('#actorSearchList').html('');
             }
         });
 
@@ -144,8 +193,423 @@
             $('#actorNm').val('');
             $('#actorSearchList').html('');
         });
+
+
+
+
+
+
+
+
+        document.getElementById('genre').addEventListener('input', function() {
+            if(!$(this).val().trim().length == 0) {
+                $.ajax({
+                    url:"/genre/autocomplete",
+                    type:"get",
+                    data:{"genre": $("#genre").val()},
+                    dataType:"json",
+                    success: function(json){
+                        if(json.length > 0){
+                            var html = "";
+                            $.each(json, function(index, item){
+                                var searchedGenre = item.searchedGenre;
+                                html += "<span class='result' style='cursor:pointer;'>" + searchedGenre + "</span><br>";
+                            });
+                            $("#genreSearchList").html(html);
+                        }
+                    },
+                    error: function(request, status, error){
+                        alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                    }
+                });
+            } else {
+                $('#genreSearchList').html('');
+            }
+        });
+
+        $('#genreSearchList').on('click', 'span.result', function() {
+            $('#genreList').append('<div style="border-radius: 10%;border: 1px solid lightgrey;display:inline-flex;padding:3px;margin:3px;">' + $(this).html() + '</div>');
+            $('#genre').val('');
+            $('#genreSearchList').html('');
+        });
+
+        document.getElementById('nation').addEventListener('input', function() {
+            if(!$(this).val().trim().length == 0) {
+                $.ajax({
+                    url:"/nation/autocomplete",
+                    type:"get",
+                    data:{"nation": $("#nation").val()},
+                    dataType:"json",
+                    success: function(json){
+                        if(json.length > 0){
+                            var html = "";
+                            $.each(json, function(index, item){
+                                var searchedNation = item.searchedNation;
+                                html += "<span class='result' style='cursor:pointer;'>" + searchedNation + "</span><br>";
+                            });
+                            $("#nationSearchList").html(html);
+                        }
+                    },
+                    error: function(request, status, error){
+                        alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                    }
+                });
+            } else {
+                $('#nationSearchList').html('');
+            }
+        });
+
+        $('#nationSearchList').on('click', 'span.result', function() {
+            $('#nationList').append('<div style="border-radius: 10%;border: 1px solid lightgrey;display:inline-flex;padding:3px;margin:3px;">' + $(this).html() + '</div>');
+            $('#nation').val('');
+            $('#nationSearchList').html('');
+        });
+
+
+        var selectedActorList;
+        var selectedDirectorList;
+        var selectedGenreList;
+        var selectedNationList;
+        var selectedDocIdListByDirector;
+        var selectedDocIdList;
+
+        $('form').submit(function(event) {
+            event.preventDefault(); // 기본 제출 동작 방지
+
+            selectedActorList = [];
+            selectedDirectorList = [];
+            selectedGenreList = [];
+            selectedNationList = [];
+
+            selectedDocIdListByDirector = [];
+            selectedDocIdList = [];
+
+            $('#actorNmList > div').each(function() {
+                selectedActorList.push($(this).html());
+            });
+            $('#directorNmList > div').each(function() {
+                selectedDirectorList.push($(this).html());
+            });
+            $('#genreList > div').each(function() {
+                selectedGenreList.push($(this).html());
+            });
+            $('#nationList > div').each(function() {
+                selectedNationList.push($(this).html());
+            });
+
+            if(selectedDirectorList.length === 0) {
+                if(selectedGenreList.length === 0) {
+                    if(selectedNationList.length === 0) {
+                        $.ajax({
+                            url: "/kmdb/searchRough",
+                            type: "get",
+                            data: {
+                                actor: selectedActorList.toString()
+                            },
+                            dataType: "json",
+                            contentType : 'application/json; charset=utf-8',
+                            success: function(json) {
+                                $.each(json, function(index, item){
+                                    if(selectedDocIdList.indexOf(item.docId) === -1) {
+                                        selectedDocIdList.push(item.docId);
+                                    }
+                                });
+                            },
+                            error: function(request, status, error){
+                                console.log("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                            }
+                        });
+                    } else {
+                        for(var k=0; k<selectedNationList.length; k++) {
+                            $.ajax({
+                                url: "/kmdb/searchRough",
+                                type: "get",
+                                data: {
+                                    'actor': selectedActorList.toString(),
+                                    'nation': selectedNationList[k]
+                                },
+                                dataType: "json",
+                                contentType : 'application/json; charset=utf-8',
+                                success: function(json) {
+                                    $.each(json, function(index, item){
+                                        if(selectedDocIdList.indexOf(item.docId) === -1) {
+                                            selectedDocIdList.push(item.docId);
+                                        }
+                                    });
+                                },
+                                error: function(request, status, error){
+                                    console.log("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                                }
+                            });
+                        }
+                    }
+                } else {
+                    if(selectedNationList.length === 0) {
+                        for(var j=0; j<selectedGenreList.length; j++) {
+                            $.ajax({
+                                url: "/kmdb/searchRough",
+                                type: "get",
+                                data: {
+
+                                    'actor': selectedActorList.toString(),
+                                    'genre': selectedGenreList[j]
+                                },
+                                dataType: "json",
+                                contentType : 'application/json; charset=utf-8',
+                                success: function(json) {
+                                    $.each(json, function(index, item){
+                                        if(selectedDocIdList.indexOf(item.docId) === -1) {
+                                            selectedDocIdList.push(item.docId);
+                                        }
+                                    });
+                                },
+                                error: function(request, status, error){
+                                    console.log("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                                }
+                            });
+                        }
+                    } else {
+                        for(var j=0; j<selectedGenreList.length; j++) {
+                            for(var k=0; k<selectedNationList.length; k++) {
+                                $.ajax({
+                                    url: "/kmdb/searchRough",
+                                    type: "get",
+                                    data: {
+                                        'actor': selectedActorList.toString(),
+                                        'genre': selectedGenreList[j],
+                                        'nation': selectedNationList[k]
+                                    },
+                                    dataType: "json",
+                                    contentType : 'application/json; charset=utf-8',
+                                    success: function(json) {
+                                        $.each(json, function(index, item){
+                                            if(selectedDocIdList.indexOf(item.docId) === -1) {
+                                                selectedDocIdList.push(item.docId);
+                                            }
+                                        });
+                                    },
+                                    error: function(request, status, error){
+                                        console.log("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            } else {
+                if(selectedGenreList.length === 0) {
+                    if(selectedNationList.length === 0) {
+                        for(var i=0; i<selectedDirectorList.length; i++) {
+                            console.log(selectedActorList.join(' '));
+                            $.ajax({
+                                url: "/kmdb/searchRough",
+                                type: "get",
+                                async:false,
+                                data: {
+                                    director: selectedDirectorList[i]
+                                },
+                                dataType: "json",
+                                contentType : 'application/json; charset=utf-8',
+                                success: function(json) {
+                                    $.each(json, function(index, item){
+                                        if(selectedDocIdListByDirector.indexOf(item.docId) === -1) {
+                                            selectedDocIdListByDirector.push(item.docId);
+                                        }
+                                    });
+                                    console.log(selectedDocIdListByDirector)
+                                },
+                                error: function(request, status, error){
+                                    console.log("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                                }
+                            });
+                            $.ajax({
+                                url: "/kmdb/searchRough",
+                                type: "get",
+                                async:false,
+                                data: {
+                                    actor: selectedActorList.join(' ')
+                                },
+                                dataType: "json",
+                                contentType : 'application/json; charset=utf-8',
+                                success: function(json) {
+                                    $.each(json, function(index, item){
+                                        console.log(item.docId);
+                                        if(selectedDocIdListByDirector.includes(item.docId)) {
+                                            console.log('▶'+item.docId);
+                                            selectedDocIdList.push(item.docId);
+                                        }
+                                    });
+                                    console.log(selectedDocIdList);
+                                },
+                                error: function(request, status, error){
+                                    console.log("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                                }
+                            });
+                        }
+                    } else {
+                        for(var i=0; i<selectedDirectorList.length; i++) {
+                                for(var k=0; k<selectedNationList.length; k++) {
+                                    $.ajax({
+                                        url: "/kmdb/searchRough",
+                                        type: "get",
+                                        async: false,
+                                        data: {
+                                            'director': selectedDirectorList[i],
+                                            // 'actor': selectedActorList.toString(),
+                                            'nation': selectedNationList[k]
+                                        },
+                                        dataType: "json",
+                                        contentType : 'application/json; charset=utf-8',
+                                        success: function(json) {
+                                            $.each(json, function(index, item){
+                                                if(selectedDocIdListByDirector.indexOf(item.docId) === -1) {
+                                                    selectedDocIdListByDirector.push(item.docId);
+                                                }
+                                            });
+                                        },
+                                        error: function(request, status, error){
+                                            console.log("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                                        }
+                                    });
+                                }
+                            $.ajax({
+                                url: "/kmdb/searchRough",
+                                type: "get",
+                                async: false,
+                                data: {
+                                    // 'director': selectedDirectorList[i],
+                                    'actor': selectedActorList.toString(),
+                                    'nation': selectedNationList[k]
+                                },
+                                dataType: "json",
+                                contentType : 'application/json; charset=utf-8',
+                                success: function(json) {
+                                    $.each(json, function(index, item){
+                                        if(selectedDocIdListByDirector.indexOf(item.docId) !== -1) {
+                                            selectedDocIdList.push(item.docId);
+                                        }
+                                    });
+                                },
+                                error: function(request, status, error){
+                                    console.log("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                                }
+                            });
+                        }
+                    }
+                } else {
+                    if(selectedNationList.length === 0) {
+                        for(var i=0; i<selectedDirectorList.length; i++) {
+                            for(var j=0; j<selectedGenreList.length; j++) {
+                                    $.ajax({
+                                        url: "/kmdb/searchRough",
+                                        type: "get",
+                                        async: false,
+                                        data: {
+                                            'director': selectedDirectorList[i],
+                                            // 'actor': selectedActorList.toString(),
+                                            'genre': selectedGenreList[j]
+                                        },
+                                        dataType: "json",
+                                        contentType : 'application/json; charset=utf-8',
+                                        success: function(json) {
+                                            $.each(json, function(index, item){
+                                                if(selectedDocIdListByDirector.indexOf(item.docId) === -1) {
+                                                    selectedDocIdListByDirector.push(item.docId);
+                                                }
+                                            });
+                                        },
+                                        error: function(request, status, error){
+                                            console.log("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                                        }
+                                    });
+                                $.ajax({
+                                    url: "/kmdb/searchRough",
+                                    type: "get",
+                                    async: false,
+                                    data: {
+                                        // 'director': selectedDirectorList[i],
+                                        'actor': selectedActorList.toString(),
+                                        'genre': selectedGenreList[j]
+                                    },
+                                    dataType: "json",
+                                    contentType : 'application/json; charset=utf-8',
+                                    success: function(json) {
+                                        $.each(json, function(index, item){
+                                            if(selectedDocIdListByDirector.indexOf(item.docId) !== -1) {
+                                                selectedDocIdList.push(item.docId);
+                                            }
+                                        });
+                                    },
+                                    error: function(request, status, error){
+                                        console.log("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                                    }
+                                });
+                            }
+                        }
+                    } else {
+                        for(var i=0; i<selectedDirectorList.length; i++) {
+                            for(var j=0; j<selectedGenreList.length; j++) {
+                                for(var k=0; k<selectedNationList.length; k++) {
+                                    $.ajax({
+                                        url: "/kmdb/searchRough",
+                                        type: "get",
+                                        async: false,
+                                        data: {
+                                            'director': selectedDirectorList[i],
+                                            // 'actor': selectedActorList.toString(),
+                                            'genre': selectedGenreList[j],
+                                            'nation': selectedNationList[k]
+                                            // 'releaseDts': '',
+                                            // 'releaseDte': ''
+                                        },
+                                        dataType: "json",
+                                        contentType : 'application/json; charset=utf-8',
+                                        success: function(json) {
+                                            $.each(json, function(index, item){
+                                                if(selectedDocIdListByDirector.indexOf(item.docId) === -1) {
+                                                    selectedDocIdListByDirector.push(item.docId);
+                                                }
+                                            });
+                                        },
+                                        error: function(request, status, error){
+                                            console.log("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                                        }
+                                    });
+                                    $.ajax({
+                                        url: "/kmdb/searchRough",
+                                        type: "get",
+                                        async: false,
+                                        data: {
+                                            // 'director': selectedDirectorList[i],
+                                            'actor': selectedActorList.toString(),
+                                            'genre': selectedGenreList[j],
+                                            'nation': selectedNationList[k]
+                                            // 'releaseDts': '',
+                                            // 'releaseDte': ''
+                                        },
+                                        dataType: "json",
+                                        contentType : 'application/json; charset=utf-8',
+                                        success: function(json) {
+                                            $.each(json, function(index, item){
+                                                if(selectedDocIdListByDirector.indexOf(item.docId) !== -1) {
+                                                    selectedDocIdList.push(item.docId);
+                                                }
+                                            });
+                                        },
+                                        error: function(request, status, error){
+                                            console.log("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
   });
   </script>
+  <script src="/js/search.js"></script>
 </body>
 
 </html>
