@@ -1,4 +1,4 @@
-package com.congsole.movie.KMDbDto;
+package com.congsole.movie.dto.KMDbDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Plots {
-    private List<Plot> plot;
+public class Vods {
+    private List<Vod> vod;
 }

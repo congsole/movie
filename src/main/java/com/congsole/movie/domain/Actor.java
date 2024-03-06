@@ -22,11 +22,11 @@ public class Actor {
         this.actorEnNm = actorEnNm;
     }
 
-    public static Actor from(com.congsole.movie.KMDbDto.Actor actorDto) {
+    public static Actor from(com.congsole.movie.dto.KMDbDto.Actor actorDto) {
         return new Actor(actorDto.getActorId(), actorDto.getActorNm(), actorDto.getActorEnNm());
     }
 
-    public static com.congsole.movie.KMDbDto.Actor to(Actor actor) {
-        return new com.congsole.movie.KMDbDto.Actor(actor.getActorId(), actor.getActorNm(), actor.getActorEnNm());
+    public static com.congsole.movie.dto.KMDbDto.Actor to(Actor actor) {
+        return new com.congsole.movie.dto.KMDbDto.Actor(actor.getActorId(), actor.getActorNm(), actor.getActorEnNm());
     }
 }

@@ -1,4 +1,4 @@
-package com.congsole.movie.KMDbDto;
+package com.congsole.movie.dto.KMDbDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Actor {
-    private String actorId;
-    private String actorNm;
-    private String actorEnNm;
+public class CommCode {
+    private String CodeNm;
+    private String CodeNo;
 }

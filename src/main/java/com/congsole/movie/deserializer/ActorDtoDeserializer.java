@@ -1,9 +1,6 @@
 package com.congsole.movie.deserializer;
 
-import com.congsole.movie.KMDbDto.Actor;
-import com.congsole.movie.KMDbDto.Movie;
-import com.congsole.movie.KMDbDto.Plot;
-import com.congsole.movie.KMDbDto.Plots;
+import com.congsole.movie.dto.KMDbDto.Actor;
 import com.fasterxml.jackson.core.JacksonException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -12,7 +9,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.util.List;
 
 public class ActorDtoDeserializer extends JsonDeserializer<Actor> {
     @Override

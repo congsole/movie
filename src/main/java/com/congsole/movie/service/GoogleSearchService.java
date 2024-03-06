@@ -2,7 +2,7 @@ package com.congsole.movie.service;
 
 import com.congsole.movie.domain.Movie;
 import com.congsole.movie.domain.MovieRepository;
-import com.congsole.movie.watchaPediaDto.RateDto;
+import com.congsole.movie.dto.watchaPediaDto.RateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
@@ -12,11 +12,9 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 

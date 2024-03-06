@@ -22,10 +22,10 @@ public class Director {
         this.directorEnNm = actorEnNm;
     }
 
-    public static Director from(com.congsole.movie.KMDbDto.Director directorDto) {
+    public static Director from(com.congsole.movie.dto.KMDbDto.Director directorDto) {
         return new Director(directorDto.getDirectorId(), directorDto.getDirectorNm(), directorDto.getDirectorEnNm());
     }
-    public static com.congsole.movie.KMDbDto.Director to(Director director) {
-        return new com.congsole.movie.KMDbDto.Director(director.getDirectorId(), director.getDirectorNm(), director.getDirectorEnNm());
+    public static com.congsole.movie.dto.KMDbDto.Director to(Director director) {
+        return new com.congsole.movie.dto.KMDbDto.Director(director.getDirectorId(), director.getDirectorNm(), director.getDirectorEnNm());
     }
 }

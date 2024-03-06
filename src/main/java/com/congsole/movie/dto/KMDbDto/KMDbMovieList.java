@@ -1,6 +1,4 @@
-package com.congsole.movie.KMDbDto;
-
-
+package com.congsole.movie.dto.KMDbDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +10,10 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Codes {
-    private List<Code> Code;
+
+public class KMDbMovieList {
+    private String Query;
+    private String KMAQuery;
+    private int TotalCount;
+    private List<Data> Data;
 }

@@ -2,14 +2,11 @@ package com.congsole.movie.service;
 
 import com.congsole.movie.domain.Movie;
 import com.congsole.movie.domain.MovieRepository;
-import com.congsole.movie.watchaPediaDto.RateDto;
-import org.assertj.core.api.SoftAssertions;
+import com.congsole.movie.dto.watchaPediaDto.RateDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.time.LocalDate;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

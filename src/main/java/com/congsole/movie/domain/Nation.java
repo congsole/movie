@@ -25,7 +25,7 @@ public class Nation {
         return new Nation(nation);
     }
 
-    public static com.congsole.movie.KMDbDto.Nation to(Nation nation) {
-        return new com.congsole.movie.KMDbDto.Nation(nation.getId(), nation.getNation());
+    public static com.congsole.movie.dto.KMDbDto.Nation to(Nation nation) {
+        return new com.congsole.movie.dto.KMDbDto.Nation(nation.getId(), nation.getNation());
     }
 }

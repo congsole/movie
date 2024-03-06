@@ -1,17 +1,11 @@
 package com.congsole.movie.domain;
 
-import com.congsole.movie.KMDbDto.*;
+
+import com.congsole.movie.dto.MovieResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -46,7 +40,7 @@ public class Movie {
     }
 
     public static Movie from(
-            com.congsole.movie.KMDbDto.Movie movieDto) {
+            com.congsole.movie.dto.KMDbDto.Movie movieDto) {
         return Movie.builder()
                 .docId(movieDto.getDocId())
                 .title(movieDto.getTitle())
@@ -62,6 +56,26 @@ public class Movie {
                 .repRlsDate(movieDto.getRepRlsDate())
                 .keywords(movieDto.getKeywords())
                 .poster(movieDto.getPosters())
+                .build();
+    }
+    public static MovieResponseDto to(Movie movie) {
+        return MovieResponseDto.builder()
+                .docId(movie.getDocId())
+                .title(movie.getTitle())
+                .titleEng(movie.getTitleEng())
+                .prodYear(movie.getProdYear())
+                .nation(movie.getNation())
+                .company(movie.getCompany())
+                .plot(movie.getPlot())
+                .runtime(movie.getRuntime())
+                .rating(movie.getRating())
+                .genre(movie.getGenre())
+                .type(movie.getType())
+                .repRlsDate(movie.getRepRlsDate())
+                .keywords(movie.getKeywords())
+                .poster(movie.getPoster().split(".jpg")[0]+".jpg")
+                .rate(movie.getRate())
+                .rateNumber(movie.getRateNumber())
                 .build();
     }
     public void addRate(double rate, int rateNumber) {

@@ -1,4 +1,4 @@
-package com.congsole.movie.KMDbDto;
+package com.congsole.movie.dto.KMDbDto;
 
 
 import com.congsole.movie.deserializer.KMDbDeserializer;

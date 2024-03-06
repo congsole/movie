@@ -1,10 +1,10 @@
 package com.congsole.movie.service;
 
-import com.congsole.movie.KMDbDto.Actor;
-import com.congsole.movie.KMDbDto.Data;
+import com.congsole.movie.dto.KMDbDto.Actor;
+import com.congsole.movie.dto.KMDbDto.Data;
 
-import com.congsole.movie.KMDbDto.Director;
-import com.congsole.movie.KMDbDto.SearchRequestDto;
+import com.congsole.movie.dto.KMDbDto.Director;
+import com.congsole.movie.dto.SearchRequestDto;
 import com.congsole.movie.domain.*;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -128,7 +128,7 @@ public class KMDbApiService {
         }
     }
 
-    public List<com.congsole.movie.KMDbDto.Movie> searchRough(SearchRequestDto requestDto) {
+    public List<com.congsole.movie.dto.KMDbDto.Movie> searchRough(SearchRequestDto requestDto) {
         UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl("http://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp");
         URI uri;
         Data dto;
@@ -138,13 +138,17 @@ public class KMDbApiService {
         uriBuilder.queryParam("ServiceKey", "2EI1I9663MK056Y91EKI");
         uriBuilder.queryParam("listCount", 500);
         uriBuilder.queryParam("startCount", 0);
+        if(requestDto.getDirector() != null && !requestDto.getDirector().isEmpty())
         uriBuilder.queryParam("director", requestDto.getDirector());
+        if(requestDto.getActor() != null && !requestDto.getActor().isEmpty())
         uriBuilder.queryParam("actor", requestDto.getActor());
-        uriBuilder.queryParam("nation", requestDto.getNation());
-        uriBuilder.queryParam("genre", requestDto.getGenre());
+//        if(requestDto.getNation() != null && !requestDto.getNation().isEmpty())
+//        uriBuilder.queryParam("nation", requestDto.getNation());
+//        if(requestDto.getGenre() != null && !requestDto.getGenre().isEmpty())
+//        uriBuilder.queryParam("genre", requestDto.getGenre());
 
         uri = uriBuilder.build().encode().toUri();
-
+        System.out.println(uri);
         String json = restTemplate.exchange(uri, HttpMethod.GET, null, String.class).getBody();
 //        System.out.println(json);
         try {
@@ -152,10 +156,10 @@ public class KMDbApiService {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             dto = objectMapper.readValue(json, Data.class);
-//            System.out.println(dto.getResult().get(0).getDocId());
             return dto.getResult();
         } catch(Exception e) {
             System.out.println(e.getMessage());
+            System.out.println("왜 안되는 거지요?");
             return null;
         }
     }

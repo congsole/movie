@@ -1,10 +1,10 @@
 package com.congsole.movie.controller;
 
-import com.congsole.movie.KMDbDto.Data;
-import com.congsole.movie.KMDbDto.Movie;
-import com.congsole.movie.KMDbDto.Nation;
-import com.congsole.movie.KMDbDto.SearchRequestDto;
+import com.congsole.movie.dto.KMDbDto.Movie;
+import com.congsole.movie.dto.SearchRequestDto;
 import com.congsole.movie.service.KMDbApiService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
@@ -49,7 +49,7 @@ public class KMDbApiController {
     }
 
     @GetMapping(value="/searchRough", produces="text/plain;charset=UTF-8")
-    public ResponseEntity<String> searchRough(HttpServletRequest request) throws JSONException {
+    public ResponseEntity<String> searchRough(HttpServletRequest request) throws JSONException, JsonProcessingException {
         SearchRequestDto dto = new SearchRequestDto(
                 request.getParameter("director"),
                 request.getParameter("actor"),
@@ -59,17 +59,11 @@ public class KMDbApiController {
 
         System.out.println(dto.getActor());
 
-        List<com.congsole.movie.KMDbDto.Movie> movieList = kmDbApiService.searchRough(dto);
-        JSONArray jsonArr = new JSONArray();
-        if(movieList != null) {
-            for(Movie movie : movieList) {
-                JSONObject jsonObj = new JSONObject();
-                jsonObj.put("docId", movie.getDocId());
-                jsonArr.put(jsonObj);
-                System.out.println(movie.getDocId());
-            }
-        }
+        List<Movie> movieList = kmDbApiService.searchRough(dto);
 
-        return ResponseEntity.ok(jsonArr.toString());
+        System.out.println(movieList);
+
+        ObjectMapper mapper = new ObjectMapper();
+        return ResponseEntity.ok(mapper.writeValueAsString(movieList)); //List -> JSONString
     }
 }

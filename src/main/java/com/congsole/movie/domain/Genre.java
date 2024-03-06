@@ -2,7 +2,6 @@ package com.congsole.movie.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
-import org.checkerframework.common.aliasing.qual.Unique;
 
 @Entity
 @Getter
@@ -26,7 +25,7 @@ public class Genre {
         return new Genre(genre);
     }
 
-    public static com.congsole.movie.KMDbDto.Genre to(Genre genre) {
-        return new com.congsole.movie.KMDbDto.Genre(genre.getId(), genre.getGenre());
+    public static com.congsole.movie.dto.KMDbDto.Genre to(Genre genre) {
+        return new com.congsole.movie.dto.KMDbDto.Genre(genre.getId(), genre.getGenre());
     }
 }

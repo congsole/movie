@@ -1,26 +1,24 @@
 package com.congsole.movie.controller;
 
-import com.congsole.movie.KMDbDto.Actor;
-import com.congsole.movie.KMDbDto.Director;
-import com.congsole.movie.KMDbDto.Genre;
-import com.congsole.movie.KMDbDto.Nation;
-import com.congsole.movie.domain.ActorRepository;
-import com.congsole.movie.domain.DirectorRepository;
+
+import com.congsole.movie.dto.KMDbDto.*;
+import com.congsole.movie.dto.MovieResponseDto;
 import com.congsole.movie.service.ViewService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -99,6 +97,25 @@ public class ViewController {
         }
         return jsonArr.toString();
     }
+    @ResponseBody
+    @GetMapping(value="/search", produces="text/plain;charset=UTF-8")
+    public String search(HttpServletRequest request, @RequestParam(value="selectedDocIdList[]", required = false) String[] selectedDocIdList) throws JsonProcessingException {
+        int yearInputLeft = Integer.parseInt(request.getParameter("yearInputLeft"));
+        int yearInputRight = Integer.parseInt(request.getParameter("yearInputRight"));
+        double rateInputLeft = Double.parseDouble(request.getParameter("rateInputLeft"));
+        double rateInputRight = Double.parseDouble(request.getParameter("rateInputRight"));
+        int rateNumberInputLeft = Integer.parseInt(request.getParameter("rateNumberInputLeft"));
+        int rateNumberInputRight = Integer.parseInt(request.getParameter("rateNumberInputRight"));
 
+        List<MovieResponseDto> searchedMovieList = new ArrayList<>();
+        if(selectedDocIdList == null || selectedDocIdList.length == 0) {
+            searchedMovieList = viewService.getSearchedList(yearInputLeft, yearInputRight, rateInputLeft, rateInputRight, rateNumberInputLeft, rateNumberInputRight);
+        } else {
+            searchedMovieList = viewService.getSearchedList(yearInputLeft, yearInputRight, rateInputLeft, rateInputRight, rateNumberInputLeft, rateNumberInputRight, selectedDocIdList);
+        }
 
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(searchedMovieList); //List -> JSONString
+
+    }
 }

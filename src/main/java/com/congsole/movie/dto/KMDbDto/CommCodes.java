@@ -1,4 +1,4 @@
-package com.congsole.movie.KMDbDto;
+package com.congsole.movie.dto.KMDbDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Ratings {
-    private List<Rating> rating;
+public class CommCodes {
+    private List<CommCode> CommCode;
 }

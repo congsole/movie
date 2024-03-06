@@ -9,4 +9,12 @@ public interface MovieRepository extends JpaRepository<Movie, String> {
     List<Movie> findMoviesByTitleContaining(String keyword);
     List<Movie> findMoviesByProdYearBetween(int year1, int year2);
 
+    List<Movie> findMoviesByProdYearBetweenAndRateBetweenAndRateNumberBetweenAndDocIdInOrderByRateDesc(int yearInputLeft, int yearInputRight,
+                                                                                                       double rateInputLeft, double rateInputRight,
+                                                                                                       int rateNumberInputLeft, int rateNumberInputRight,
+                                                                                                       String[] selectedDocIdList);
+    List<Movie> findMoviesByProdYearBetweenAndRateBetweenAndRateNumberBetweenOrderByRateDesc(int yearInputLeft, int yearInputRight,
+                                                                                                       double rateInputLeft, double rateInputRight,
+                                                                                                       int rateNumberInputLeft, int rateNumberInputRight);
+
 }

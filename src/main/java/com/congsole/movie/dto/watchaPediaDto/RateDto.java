@@ -1,4 +1,4 @@
-package com.congsole.movie.watchaPediaDto;
+package com.congsole.movie.dto.watchaPediaDto;
 
 import lombok.*;
 

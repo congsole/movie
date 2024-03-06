@@ -1,8 +1,9 @@
 package com.congsole.movie.service;
 
-import com.congsole.movie.KMDbDto.Actor;
-import com.congsole.movie.KMDbDto.Director;
+import com.congsole.movie.dto.KMDbDto.Actor;
+import com.congsole.movie.dto.KMDbDto.Director;
 import com.congsole.movie.domain.*;
+import com.congsole.movie.dto.MovieResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ViewService {
 
+    private final MovieRepository movieRepository;
     private final ActorRepository actorRepository;
     private final DirectorRepository directorRepository;
     private final GenreRepository genreRepository;
@@ -37,10 +39,32 @@ public class ViewService {
         return actorRepository.findDistinctByActorNmContaining(inputtedNm).stream().map(com.congsole.movie.domain.Actor::to).collect(Collectors.toList());
     }
 
-    public List<com.congsole.movie.KMDbDto.Genre> genreAutocomplete(String inputtedGenre) {
+    public List<com.congsole.movie.dto.KMDbDto.Genre> genreAutocomplete(String inputtedGenre) {
         return genreRepository.findByGenreContaining(inputtedGenre).stream().map(Genre::to).collect(Collectors.toList());
     }
-    public List<com.congsole.movie.KMDbDto.Nation> nationAutocomplete(String inputtedNation) {
+    public List<com.congsole.movie.dto.KMDbDto.Nation> nationAutocomplete(String inputtedNation) {
         return nationRepository.findByNationContaining(inputtedNation).stream().map(Nation::to).collect(Collectors.toList());
+    }
+
+    public List<MovieResponseDto> getSearchedList(
+            int yearInputLeft, int yearInputRight,
+            double rateInputLeft, double rateInputRight,
+            int rateNumberInputLeft, int rateNumberInputRight)
+    {
+        return movieRepository.findMoviesByProdYearBetweenAndRateBetweenAndRateNumberBetweenOrderByRateDesc(
+                yearInputLeft, yearInputRight, rateInputLeft, rateInputRight, rateNumberInputLeft, rateNumberInputRight)
+                .stream().map(Movie::to).collect(Collectors.toList());
+    }
+
+    public List<MovieResponseDto> getSearchedList(
+            int yearInputLeft, int yearInputRight,
+            double rateInputLeft, double rateInputRight,
+            int rateNumberInputLeft, int rateNumberInputRight,
+            String[] selectedDocIdList)
+    {
+
+        return movieRepository.findMoviesByProdYearBetweenAndRateBetweenAndRateNumberBetweenAndDocIdInOrderByRateDesc(
+                        yearInputLeft, yearInputRight, rateInputLeft, rateInputRight, rateNumberInputLeft, rateNumberInputRight, selectedDocIdList)
+                .stream().map(Movie::to).collect(Collectors.toList());
     }
 }
