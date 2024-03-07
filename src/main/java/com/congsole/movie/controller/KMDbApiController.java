@@ -7,7 +7,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,7 +46,7 @@ public class KMDbApiController {
     }
 
     @GetMapping(value="/searchRough", produces="text/plain;charset=UTF-8")
-    public ResponseEntity<String> searchRough(HttpServletRequest request) throws JSONException, JsonProcessingException {
+    public ResponseEntity<String> searchRough(HttpServletRequest request) throws JsonProcessingException {
         SearchRequestDto dto = new SearchRequestDto(
                 request.getParameter("director"),
                 request.getParameter("actor"),

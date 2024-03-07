@@ -40,7 +40,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 //	testImplementation 'org.springframework.security:spring-security-test'
-
+	implementation group: 'org.json', name: 'json', version: '20200518'
 	// jsoup
 	implementation 'org.jsoup:jsoup:1.15.3'
 
