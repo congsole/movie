@@ -35,7 +35,7 @@
             position: relative;
         }
 
-        input#directorNm, input#actorNm, input#genre, input#nation {
+        input#directorNm, input#actorNm, input#genre, input#nation, input#title {
             border: none;
             height: 1.5em;
             width: 290px;
@@ -46,7 +46,7 @@
             top: 100%; /* 부모 요소의 아래에 배치 */
             left: 0; /* 왼쪽 정렬 */
             width: 100%; /* 너비 100% */
-            z-index: 1; /* 다른 요소들 위에 표시 */
+            z-index: 10; /* 다른 요소들 위에 표시 */
             background-color: white;
             color: black;
         }
@@ -168,10 +168,10 @@
                     </div>
                 </div>
             </div>
-            <input type="submit" value="순  위  검  색">
+            <input class="btn btn-dark" type="submit" value="순  위  검  색">
         </form>
     </div>
-    <div class="navbar-vertical-content bg-white " id="searchResult" style="--bs-bg-opacity: .5;margin-left: 10px; width:1650px; overflow: scroll">
+    <div class="navbar-vertical-content bg-white " id="searchResult" style="--bs-bg-opacity: .5;margin-left: 10px; width:1300px; overflow: scroll">
         <h1>내 맘대로 영화 순위!!</h1>
     </div>
 </div>
@@ -211,10 +211,16 @@
         });
 
         $('#directorSearchList').on('click', 'span.result', function() {
-            $('#directorNmList').append('<div style="border-radius: 10%;border: 1px solid lightgrey;display:inline-flex;padding:3px;margin:3px;">' + $(this).html() + '</div>');
+            $('#directorNmList').append('<div style="cursor:pointer;border-radius: 10%;border: 1px solid lightgrey;display:inline-flex;padding:3px;margin:3px;">' + $(this).html() + '</div>');
             $('#directorNm').val('');
             $('#directorSearchList').html('');
+            $('#directorNmList').on('click', 'div',function() {
+                $(this).remove();
+            });
         });
+
+
+
 
         document.getElementById('actorNm').addEventListener('input', function() {
             if(!$(this).val().trim().length == 0) {
@@ -243,9 +249,12 @@
         });
 
         $('#actorSearchList').on('click', 'span.result', function() {
-            $('#actorNmList').append('<div style="border-radius: 10%;border: 1px solid lightgrey;display:inline-flex;padding:3px;margin:3px;">' + $(this).html() + '</div>');
+            $('#actorNmList').append('<div style="cursor:pointer;border-radius: 10%;border: 1px solid lightgrey;display:inline-flex;padding:3px;margin:3px;">' + $(this).html() + '</div>');
             $('#actorNm').val('');
             $('#actorSearchList').html('');
+            $('#actorNmList').on('click', 'div',function() {
+                $(this).remove();
+            });
         });
 
 
@@ -282,9 +291,12 @@
         });
 
         $('#genreSearchList').on('click', 'span.result', function() {
-            $('#genreList').append('<div style="border-radius: 10%;border: 1px solid lightgrey;display:inline-flex;padding:3px;margin:3px;">' + $(this).html() + '</div>');
+            $('#genreList').append('<div style="cursor:pointer;border-radius: 10%;border: 1px solid lightgrey;display:inline-flex;padding:3px;margin:3px;">' + $(this).html() + '</div>');
             $('#genre').val('');
             $('#genreSearchList').html('');
+            $('#genreList').on('click', 'div',function() {
+                $(this).remove();
+            });
         });
 
         document.getElementById('nation').addEventListener('input', function() {
@@ -314,10 +326,15 @@
         });
 
         $('#nationSearchList').on('click', 'span.result', function() {
-            $('#nationList').append('<div style="border-radius: 10%;border: 1px solid lightgrey;display:inline-flex;padding:3px;margin:3px;">' + $(this).html() + '</div>');
+            $('#nationList').append('<div style="cursor:pointer;border-radius: 10%;border: 1px solid lightgrey;display:inline-flex;padding:3px;margin:3px;">' + $(this).html() + '</div>');
             $('#nation').val('');
             $('#nationSearchList').html('');
+            $('#nationList').on('click', 'div',function() {
+                $(this).remove();
+            });
         });
+
+
 
 
         var selectedActorList;
