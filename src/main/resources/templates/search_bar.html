@@ -567,18 +567,20 @@
             for(var i=0; i<searchedMovieList.length; i++) {
                 str =
                     '<div class="result-item" style="width:250px; float:left;margine:20px;">' +
-                        '<div style="width:213px; height: 296px; background-image: url(' + searchedMovieList[i].poster + '); background-color: lightgrey"></div>' +
-                        // '<img src="' + searchedMovieList[i].poster + '">' +
+                        '<div style="cursor:pointer; width:213px; height: 296px; background-image: url(' + searchedMovieList[i].poster + '); background-color: lightgrey" data-bs-toggle="popover" data-bs-title="' + searchedMovieList[i].title + '" data-bs-content="'+ searchedMovieList[i].plot + '"></div>' +
                         '<p style="margine:0px; padding: 0px;">' + searchedMovieList[i].title + ' (' + searchedMovieList[i].prodYear + ')</p>' +
                         '<p style="margine:0px; padding: 0px;">★' + searchedMovieList[i].rate + ' (' + searchedMovieList[i].rateNumber +')</p>' +
                         '<p style="margine:0px; padding: 0px;">' + searchedMovieList[i].genre + '</p>' +
                     '</div>';
                 searchResult.append(str);
             }
+            const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+            const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
 
 
 
         });
+
   });
   </script>
   <script src="/js/search.js?sdf"></script>
